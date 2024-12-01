@@ -30,7 +30,7 @@ def random_date():
 generated_user_ids = set()
 
 users = []
-for _ in range(10000):
+for _ in range(5):
     tenant_id = random.choice(tenants)
 
     while True:
