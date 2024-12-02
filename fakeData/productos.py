@@ -1,5 +1,6 @@
 import json
 import random
+from decimal import Decimal
 from datetime import datetime, timedelta
 from faker import Faker
 import boto3
