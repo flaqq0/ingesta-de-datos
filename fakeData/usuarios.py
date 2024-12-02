@@ -3,6 +3,8 @@ import random
 from datetime import datetime, timedelta
 from faker import Faker
 import hashlib
+import boto3
+from botocore.exceptions import ClientError
 
 # Inicializar Faker
 fake = Faker()
@@ -26,6 +28,10 @@ def random_date():
     random_days = random.randint(0, 30)
     return (start_date + timedelta(days=random_days)).strftime("%Y-%m-%d %H:%M:%S")
 
+# Conectar con DynamoDB
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Usuarios')  # Nombre de tu tabla DynamoDB
+
 # Generar datos para 10,000 usuarios
 generated_user_ids = set()
 
@@ -48,8 +54,15 @@ for _ in range(5):
     }
     users.append(user)
 
+    # Subir cada usuario a DynamoDB
+    try:
+        table.put_item(Item=user)
+        print(f"Usuario {user_id} agregado a DynamoDB.")
+    except ClientError as e:
+        print(f"Error al agregar usuario {user_id}: {e.response['Error']['Message']}")
+
 # Guardar en users.json
 with open(output_file_users, "w", encoding="utf-8") as outfile:
     json.dump(users, outfile, ensure_ascii=False, indent=4)
 
-print(f"Archivo '{output_file_users}' generado con éxito.")
+print(f"Archivo '{output_file_users}' generado con éxito y los usuarios han sido subidos a DynamoDB.")
