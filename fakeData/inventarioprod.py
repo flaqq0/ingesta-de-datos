@@ -39,6 +39,9 @@ def get_existing_products():
 
 # Generar stock aleatorio basado en el stock disponible del inventario principal
 def generate_stock(max_stock):
+    if max_stock <= 1:
+        # Si el stock máximo es <= 1, devuelve 1
+        return 1
     return random.randint(1, max_stock)
 
 # Generar fake data para productos en inventarios
@@ -61,7 +64,7 @@ def generate_inventory_products(inventories, products):
         # Generar ip_id
         ip_id = f"{inventory_id}#{product_id}"
 
-        # Generar stock para el producto (menor al stock del inventario principal)
+        # Generar stock para el producto (menor o igual al stock del inventario principal)
         stock = generate_stock(inventory_stock)
 
         # Observaciones aleatorias
