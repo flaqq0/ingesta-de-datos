@@ -13,8 +13,8 @@ table_usuarios = dynamodb.Table("pf_usuarios")
 table_inventario = dynamodb.Table("pf_inventario")
 table_ordenes = dynamodb.Table("pf_ordenes")
 
-# Inicializar Faker
-fake = Faker("es_PE")
+# Inicializar Faker (direcciones internacionales)
+fake = Faker()
 
 # Lista de tenants
 tenants = ["uwu", "plazavea", "wong"]
@@ -40,19 +40,19 @@ def get_existing_inventory():
         print(f"Error al obtener inventarios: {e.response['Error']['Message']}")
         return []
 
-# Generar información de usuario (departamento, provincia, distrito, dirección)
+# Generar información de usuario (direcciones internacionales)
 def generate_user_info():
     return {
-        "departamento": fake.department(),
-        "provincia": fake.state(),
-        "distrito": fake.city(),
+        "pais": fake.country(),
+        "ciudad": fake.city(),
         "direccion": fake.street_address(),
+        "codigo_postal": fake.postcode(),
     }
 
 # Generar órdenes
 def generate_orders(users, inventory):
     orders = []
-    for _ in range(10):  # Generar 100 órdenes
+    for _ in range(100):  # Generar 100 órdenes
         tenant_id = random.choice(tenants)
 
         # Seleccionar un usuario existente
