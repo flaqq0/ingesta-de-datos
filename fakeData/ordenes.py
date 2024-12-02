@@ -11,6 +11,7 @@ region_name = "us-east-1"
 dynamodb = boto3.resource("dynamodb", region_name=region_name)
 table_usuarios = dynamodb.Table("pf_usuarios")
 table_inventario = dynamodb.Table("pf_inventario")
+table_productos = dynamodb.Table("pf_productos")
 table_ordenes = dynamodb.Table("pf_ordenes")
 
 # Inicializar Faker (direcciones internacionales)
@@ -39,6 +40,19 @@ def get_existing_inventory():
     except ClientError as e:
         print(f"Error al obtener inventarios: {e.response['Error']['Message']}")
         return []
+
+# Obtener el precio del producto desde la tabla `pf_productos`
+def get_product_price(tenant_id, product_id):
+    try:
+        response = table_productos.get_item(Key={"tenant_id": tenant_id, "product_id": product_id})
+        product = response.get("Item")
+        if product and "product_price" in product:
+            return Decimal(str(product["product_price"]))
+        else:
+            raise KeyError(f"Precio no encontrado para el producto {product_id}")
+    except ClientError as e:
+        print(f"Error al obtener precio del producto {product_id}: {e.response['Error']['Message']}")
+        return Decimal(0)
 
 # Generar información de usuario (direcciones internacionales)
 def generate_user_info():
@@ -71,8 +85,8 @@ def generate_orders(users, inventory):
             stock = item.get("stock", 10)  # Stock predeterminado si no está presente
             quantity = random.randint(1, min(stock, 5))  # Cantidad de producto menor o igual al stock disponible
 
-            # Calcular precio total
-            price = Decimal(str(item["product_price"]))
+            # Obtener el precio del producto
+            price = get_product_price(tenant_id, product_id)
             total_price += price * quantity
 
             # Agregar producto a la lista
