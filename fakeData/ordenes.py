@@ -44,8 +44,11 @@ def get_existing_inventory():
 # Obtener el precio del producto desde la tabla `pf_productos`
 def get_product_price(tenant_id, product_id):
     try:
+        print(f"Buscando precio para producto_id: {product_id} y tenant_id: {tenant_id}")
         response = table_productos.get_item(Key={"tenant_id": tenant_id, "product_id": product_id})
         product = response.get("Item")
+        if product:
+            print(f"Producto encontrado: {product}")
         if product and "product_price" in product:
             return Decimal(str(product["product_price"]))
         else:
