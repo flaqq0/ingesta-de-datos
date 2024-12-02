@@ -1,6 +1,5 @@
 import json
 import random
-from decimal import Decimal
 from datetime import datetime, timedelta
 from faker import Faker
 import boto3
@@ -13,15 +12,28 @@ fake = Faker()
 # Lista de tenants
 tenants = ["uwu", "wong", "plazavea"]
 
-# Categorías y marcas de productos electrónicos
-categories = ["Smartphones", "Laptops", "Tablets", "Smartwatches", "Headphones", "Cameras"]
-brands = {
-    "Smartphones": ["Samsung", "Apple", "Xiaomi", "Nicoles", "Google"],
-    "Laptops": ["Dell", "HP", "SofieKe", "Lenovo", "Asus"],
-    "Tablets": ["Apple", "Samsung", "Lenovo", "Huawei"],
-    "Smartwatches": ["Apple", "Samsung", "Fitbit", "RenateGarcie"],
-    "Headphones": ["Sony", "Bose", "JBL", "Beats", "Flavie"],
-    "Cameras": ["Canon", "Nikon", "Sony", "Fujifilm", "Panasonic"]
+# Categorías y marcas de productos
+categories = {
+    "Electrónicos": {
+        "Smartphones": ["Samsung", "Apple", "Xiaomi", "OnePlus", "Google"],
+        "Laptops": ["Dell", "HP", "Apple", "Lenovo", "Asus"],
+        "Tablets": ["Apple", "Samsung", "Lenovo", "Huawei"],
+        "Smartwatches": ["Apple", "Samsung", "Fitbit", "Garmin"],
+        "Headphones": ["Sony", "Bose", "JBL", "Beats", "Sennheiser"],
+        "Cameras": ["Canon", "Nikon", "Sony", "Fujifilm", "Panasonic"]
+    },
+    "Cocina": {
+        "Refrigeradores": ["LG", "Samsung", "Whirlpool", "GE", "Bosch"],
+        "Microondas": ["Panasonic", "Samsung", "LG", "GE", "Whirlpool"],
+        "Licuadoras": ["Oster", "Ninja", "KitchenAid", "Black+Decker"],
+        "Cafeteras": ["Nespresso", "Keurig", "Cuisinart", "Hamilton Beach"]
+    },
+    "Muebles de Casa": {
+        "Sofás": ["IKEA", "Ashley", "La-Z-Boy", "Wayfair", "West Elm"],
+        "Mesas": ["IKEA", "Pottery Barn", "Ashley", "Crate & Barrel"],
+        "Sillas": ["IKEA", "Herman Miller", "Steelcase", "Wayfair"],
+        "Camas": ["Sealy", "Tempur-Pedic", "Simmons", "IKEA", "Casper"]
+    }
 }
 
 # Salida
@@ -34,22 +46,23 @@ table = dynamodb.Table("pf_productos")  # Cambia por el nombre de tu tabla
 
 # Función para generar un precio aleatorio
 def random_price():
-    return Decimal(str(round(random.uniform(50, 3000), 2)))  # Convertir a Decimal
+    return Decimal(str(round(random.uniform(10, 5000), 2)))  # Convertir a Decimal
 
 # Función para generar una fecha de lanzamiento aleatoria
 def random_release_date():
-    start_date = datetime.now() - timedelta(days=365 * 3)  # Hace hasta 3 años
-    random_days = random.randint(0, 365 * 3)
+    start_date = datetime.now() - timedelta(days=365 * 5)  # Hace hasta 5 años
+    random_days = random.randint(0, 365 * 5)
     return (start_date + timedelta(days=random_days)).strftime("%Y-%m-%d")
 
-# Generar productos electrónicos
+# Generar productos
 generated_product_ids = set()
 products = []
 
-for _ in range(1000):  # Generar 1000 productos
+for _ in range(30):  # Generar 3000 productos
     tenant_id = random.choice(tenants)
-    category = random.choice(categories)
-    brand = random.choice(brands[category])
+    main_category = random.choice(list(categories.keys()))  # Electrónicos, Cocina, Muebles de Casa
+    sub_category = random.choice(list(categories[main_category].keys()))
+    brand = random.choice(categories[main_category][sub_category])
 
     # Generar un product_id único
     while True:
@@ -58,9 +71,10 @@ for _ in range(1000):  # Generar 1000 productos
             generated_product_ids.add(product_id)
             break
 
-    product_name = f"{brand} {category[:-1]} {random.randint(100, 999)}"
+    product_name = f"{brand} {sub_category[:-1]} {random.randint(100, 999)}"
     product_info = {
-        "category": category,
+        "category": main_category,
+        "sub_category": sub_category,
         "release_date": random_release_date(),
         "features": fake.sentence(nb_words=8)
     }
