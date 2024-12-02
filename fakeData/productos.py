@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from faker import Faker
 import boto3
 from botocore.exceptions import ClientError
+from decimal import Decimal  # Importar Decimal para DynamoDB
 
 # Inicializar Faker
 fake = Faker()
@@ -14,11 +15,11 @@ tenants = ["uwu", "wong", "plazavea"]
 # Categorías y marcas de productos electrónicos
 categories = ["Smartphones", "Laptops", "Tablets", "Smartwatches", "Headphones", "Cameras"]
 brands = {
-    "Smartphones": ["Samsung", "Apple", "Xiaomi", "Nicoles", "Google"],
-    "Laptops": ["Dell", "HP", "SofieKe", "Lenovo", "Asus"],
+    "Smartphones": ["Samsung", "Apple", "Xiaomi", "OnePlus", "Google"],
+    "Laptops": ["Dell", "HP", "Apple", "Lenovo", "Asus"],
     "Tablets": ["Apple", "Samsung", "Lenovo", "Huawei"],
-    "Smartwatches": ["Apple", "Samsung", "Fitbit", "RenateGarcie"],
-    "Headphones": ["Sony", "Bose", "JBL", "Beats", "Flavie"],
+    "Smartwatches": ["Apple", "Samsung", "Fitbit", "Garmin"],
+    "Headphones": ["Sony", "Bose", "JBL", "Beats", "Sennheiser"],
     "Cameras": ["Canon", "Nikon", "Sony", "Fujifilm", "Panasonic"]
 }
 
@@ -32,7 +33,7 @@ table = dynamodb.Table("pf_productos")  # Cambia por el nombre de tu tabla
 
 # Función para generar un precio aleatorio
 def random_price():
-    return round(random.uniform(50, 3000), 2)
+    return Decimal(str(round(random.uniform(50, 3000), 2)))  # Convertir a Decimal
 
 # Función para generar una fecha de lanzamiento aleatoria
 def random_release_date():
@@ -44,14 +45,14 @@ def random_release_date():
 generated_product_ids = set()
 products = []
 
-for _ in range(5):  # Generar 1000 productos
+for _ in range(1000):  # Generar 1000 productos
     tenant_id = random.choice(tenants)
     category = random.choice(categories)
     brand = random.choice(brands[category])
 
     # Generar un product_id único
     while True:
-        product_id = f"product_{random.randint(100, 99999)}"
+        product_id = f"product_{random.randint(1000, 99999)}"
         if product_id not in generated_product_ids:
             generated_product_ids.add(product_id)
             break
@@ -62,7 +63,7 @@ for _ in range(5):  # Generar 1000 productos
         "release_date": random_release_date(),
         "features": fake.sentence(nb_words=8)
     }
-    product_price = random_price()
+    product_price = random_price()  # Generar precio como Decimal
 
     product = {
         "tenant_id": tenant_id,
@@ -70,7 +71,7 @@ for _ in range(5):  # Generar 1000 productos
         "product_name": product_name,
         "product_brand": brand,
         "product_info": product_info,
-        "product_price": product_price
+        "product_price": product_price  # Asegurarse de que sea Decimal
     }
     products.append(product)
 
@@ -82,6 +83,7 @@ for _ in range(5):  # Generar 1000 productos
 
 # Guardar en productos.json
 with open(output_file_products, "w", encoding="utf-8") as outfile:
-    json.dump(products, outfile, ensure_ascii=False, indent=4)
+    # Convertir Decimal a str para guardar en JSON
+    json.dump(products, outfile, ensure_ascii=False, indent=4, default=str)
 
 print(f"Archivo '{output_file_products}' generado con éxito y los productos han sido subidos a DynamoDB.")
