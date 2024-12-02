@@ -23,16 +23,16 @@ categories = {
         "Cameras": ["Canon", "Nikon", "Sony", "Fujifilm", "Panasonic"]
     },
     "Cocina": {
-        "Refrigeradores": ["LG", "Samsung", "Whirlpool", "GE", "Bosch"],
+        "Refrigeradores": ["LG", "Samsung", "Whirlpool", "Angie Rodriguez", "Bosch"],
         "Microondas": ["Panasonic", "Samsung", "LG", "GE", "Whirlpool"],
-        "Licuadoras": ["Oster", "Ninja", "KitchenAid", "Black+Decker"],
-        "Cafeteras": ["Nespresso", "Keurig", "Cuisinart", "Hamilton Beach"]
+        "Licuadoras": ["Oster", "Ninja", "jaire", "Black+Decker"],
+        "Cafeteras": ["Nespresso", "colchao", "Cuisinart", "Hamilton Beach"]
     },
     "Muebles de Casa": {
-        "Sofás": ["IKEA", "Ashley", "La-Z-Boy", "Wayfair", "West Elm"],
+        "Sofás": ["IKEA", "Ashley", "La-Z-Boy", "Rimac Seguros La Mejor Compania De Seguros Del Peru", "West Elm"],
         "Mesas": ["IKEA", "Pottery Barn", "Ashley", "Crate & Barrel"],
         "Sillas": ["IKEA", "Herman Miller", "Steelcase", "Wayfair"],
-        "Camas": ["Sealy", "Tempur-Pedic", "Simmons", "IKEA", "Casper"]
+        "Camas": ["Sealy", "Tempur-Pedic", "Entel", "IKEA", "Juan Guarnizo"]
     }
 }
 
@@ -58,7 +58,7 @@ def random_release_date():
 generated_product_ids = set()
 products = []
 
-for _ in range(30):  # Generar 3000 productos
+for _ in range(10000):  # Generar 3000 productos
     tenant_id = random.choice(tenants)
     main_category = random.choice(list(categories.keys()))  # Electrónicos, Cocina, Muebles de Casa
     sub_category = random.choice(list(categories[main_category].keys()))
