@@ -29,7 +29,7 @@ def upload_to_s3(file_path, bucket, s3_file_path):
 
 # Función para realizar la ingesta de archivos de usuarios
 def ingest():
-    logger.info(f"Iniciando ingesta al bucket '{BUCKET_NAME}'.")
+    logger.info(f"Iniciando ingesta al bucket '{BUCKETS}'.")
     start_time = datetime.now()
     processed_files = 0
 
@@ -42,7 +42,7 @@ def ingest():
                 # Subir archivo al bucket S3
                 try:
                     logger.info(f"Procesando archivo: {file_path}")
-                    upload_to_s3(file_path, BUCKET_NAME, s3_file_path)
+                    upload_to_s3(file_path, BUCKETS, s3_file_path)
                     processed_files += 1
                 except Exception as e:
                     logger.error(f"Error al procesar el archivo '{file_path}': {str(e)}")
