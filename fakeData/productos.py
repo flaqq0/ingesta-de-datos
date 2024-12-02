@@ -15,11 +15,11 @@ tenants = ["uwu", "wong", "plazavea"]
 # Categorías y marcas de productos
 categories = {
     "Electrónicos": {
-        "Smartphones": ["Samsung", "Apple", "Xiaomi", "OnePlus", "Google"],
-        "Laptops": ["Dell", "HP", "Apple", "Lenovo", "Asus"],
+        "Smartphones": ["Samsung", "Apple", "Xiaomi", "Nicoles", "Google"],
+        "Laptops": ["Dell", "HP", "SofieKe", "Lenovo", "Asus"],
         "Tablets": ["Apple", "Samsung", "Lenovo", "Huawei"],
-        "Smartwatches": ["Apple", "Samsung", "Fitbit", "Garmin"],
-        "Headphones": ["Sony", "Bose", "JBL", "Beats", "Sennheiser"],
+        "Smartwatches": ["Apple", "Samsung", "Fitbit", "RenateGarcie"],
+        "Headphones": ["Sony", "Bose", "JBL", "Beats", "Flavie"],
         "Cameras": ["Canon", "Nikon", "Sony", "Fujifilm", "Panasonic"]
     },
     "Cocina": {
