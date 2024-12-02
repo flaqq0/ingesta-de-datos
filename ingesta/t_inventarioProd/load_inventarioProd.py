@@ -5,8 +5,8 @@ from botocore.exceptions import NoCredentialsError, ClientError
 from loguru import logger
 from datetime import datetime
 
-# Configuración del logger
-LOG_FILE_PATH = "./logs/load_pagos.log"
+# Configuración de logger
+LOG_FILE_PATH = "./logs/load_inventoryProd.log"
 logger.add(
     LOG_FILE_PATH,
     format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}",
@@ -18,7 +18,7 @@ BASE_DIRECTORY = "./exported_data"
 BUCKET_NAME = "aproyecto-dev"
 
 # Conexión a S3
-s3 = boto3.client("s3")
+s3 = boto3.client('s3')
 
 def check_bucket_exists(bucket_name):
     try:
@@ -55,15 +55,15 @@ def ingest():
         logger.error(f"El directorio '{BASE_DIRECTORY}' no existe. Abortando ingesta.")
         return
 
-    file_path = os.path.join(BASE_DIRECTORY, "pf_pagos.json")
+    file_path = os.path.join(BASE_DIRECTORY, "pf_inventario.json")
     if not os.path.isfile(file_path):
-        logger.warning(f"No se encontró el archivo 'pf_pagos.json' en '{BASE_DIRECTORY}'. Nada para subir.")
+        logger.warning(f"No se encontró el archivo 'pf_inventario.json' en '{BASE_DIRECTORY}'. Nada para subir.")
         return
     
     file_size = os.path.getsize(file_path) / 1024  # Tamaño en KB
     logger.info(f"Archivo '{file_path}' encontrado. Tamaño: {file_size:.2f} KB.")
 
-    s3_file_path = "pagos/pf_pagos.json"
+    s3_file_path = "inventarioProd/pf_inventario.json"
     try:
         logger.info(f"Subiendo archivo '{file_path}' al bucket S3 en la ruta '{s3_file_path}'.")
         upload_start_time = datetime.now()

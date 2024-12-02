@@ -2,10 +2,10 @@ import boto3
 import json
 import os
 from loguru import logger
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# Configuración de logger con milisegundos
-LOG_FILE_PATH = "./logs/pull_orders.log"
+# Configuración de logger
+LOG_FILE_PATH = "./logs/pull_inventory.log"
 logger.add(
     LOG_FILE_PATH,
     format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}",
@@ -14,7 +14,7 @@ logger.add(
 )
 
 # Variable global para definir el nombre de la tabla
-TABLE_NAME = "pf_ordenes"
+TABLE_NAME = "pf_inventario"
 REGION = "us-east-1"
 
 def export_table_to_json_dynamodb(output_dir, table_name=TABLE_NAME):
