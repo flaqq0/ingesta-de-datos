@@ -5,7 +5,7 @@ from loguru import logger
 from datetime import datetime
 
 # Configuración de logger con milisegundos
-LOG_FILE_PATH = "/logs/pull_users.log"
+LOG_FILE_PATH = "./logs/pull_users.log"
 logger.add(LOG_FILE_PATH, format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {message}", level="INFO", rotation="10 MB")
 
 # Variable global para definir el nombre de la tabla
