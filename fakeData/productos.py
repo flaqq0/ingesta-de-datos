@@ -32,7 +32,7 @@ table = dynamodb.Table("pf_productos")  # Cambia por el nombre de tu tabla
 
 # Función para generar un precio aleatorio
 def random_price():
-    return round(random.uniform(50, 3000), 2)
+    return round(float(50, 3000), 2)
 
 # Función para generar una fecha de lanzamiento aleatoria
 def random_release_date():
