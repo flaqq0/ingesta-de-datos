@@ -60,7 +60,6 @@ for _ in range(10000):
     # Subir cada usuario a DynamoDB
     try:
         table.put_item(Item=user)
-        print(f"Usuario {user_id} agregado a DynamoDB.")
     except ClientError as e:
         print(f"Error al agregar usuario {user_id}: {e.response['Error']['Message']}")
 
