@@ -15,7 +15,7 @@ tenants = ["uwu", "wong", "plazavea"]
 categories = ["Smartphones", "Laptops", "Tablets", "Smartwatches", "Headphones", "Cameras"]
 brands = {
     "Smartphones": ["Samsung", "Apple", "Xiaomi", "Nicoles", "Google"],
-    "Laptops": ["Dell", "HP", "SofieKu", "Lenovo", "Asus"],
+    "Laptops": ["Dell", "HP", "SofieKe", "Lenovo", "Asus"],
     "Tablets": ["Apple", "Samsung", "Lenovo", "Huawei"],
     "Smartwatches": ["Apple", "Samsung", "Fitbit", "RenateGarcie"],
     "Headphones": ["Sony", "Bose", "JBL", "Beats", "Flavie"],
