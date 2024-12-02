@@ -39,11 +39,11 @@ table = dynamodb.Table('pf_usuarios')  # Nombre de tu tabla DynamoDB
 generated_user_ids = set()
 
 users = []
-for _ in range(400):
+for _ in range(10000):
     tenant_id = random.choice(tenants)
 
     while True:
-        user_id = f"user_{random.randint(10000, 99999)}"
+        user_id = f"user_{random.randint(1000, 99999)}"
         if user_id not in generated_user_ids:
             generated_user_ids.add(user_id)
             break
