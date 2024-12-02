@@ -28,8 +28,11 @@ def random_date():
     random_days = random.randint(0, 30)
     return (start_date + timedelta(days=random_days)).strftime("%Y-%m-%d %H:%M:%S")
 
+# Especificar la región de DynamoDB
+region_name = 'us-east-1'  # Cambia esta línea con la región donde está tu DynamoDB
+
 # Conectar con DynamoDB
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name=region_name)
 table = dynamodb.Table('pf_usuarios')  # Nombre de tu tabla DynamoDB
 
 # Generar datos para 10,000 usuarios
