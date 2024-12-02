@@ -30,7 +30,7 @@ def random_date():
 
 # Conectar con DynamoDB
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('Usuarios')  # Nombre de tu tabla DynamoDB
+table = dynamodb.Table('pf_usuarios')  # Nombre de tu tabla DynamoDB
 
 # Generar datos para 10,000 usuarios
 generated_user_ids = set()
