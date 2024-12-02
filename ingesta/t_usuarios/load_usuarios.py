@@ -57,23 +57,20 @@ def ingest():
         logger.error(f"El directorio '{BASE_DIRECTORY}' no existe. Abortando ingesta.")
         return
 
-    files = [f for f in os.listdir(BASE_DIRECTORY) if f.endswith(".json")]
-    if not files:
-        logger.warning(f"No se encontraron archivos .json en '{BASE_DIRECTORY}'. Nada para subir.")
+    # Buscar el archivo productos.json en el directorio
+    file_path = os.path.join(BASE_DIRECTORY, "usuarios.json")
+    if not os.path.isfile(file_path):
+        logger.warning(f"No se encontró el archivo 'usuarios.json' en '{BASE_DIRECTORY}'. Nada para subir.")
         return
 
-    # Procesar cada archivo en el directorio
-    for file in files:
-        file_path = os.path.join(BASE_DIRECTORY, file)
-        s3_file_path = f"usuarios/{file}"  # Ruta en el bucket S3
-
-        # Subir archivo al bucket S3
-        try:
-            logger.info(f"Procesando archivo: {file_path}")
-            upload_to_s3(file_path, BUCKET_NAME, s3_file_path)
-            processed_files += 1
-        except Exception as e:
-            logger.error(f"Error al procesar el archivo '{file_path}': {str(e)}")
+    # Subir archivo al bucket S3
+    s3_file_path = "usuarios/usuarios.json"  # Ruta en el bucket S3
+    try:
+        logger.info(f"Procesando archivo: {file_path}")
+        upload_to_s3(file_path, BUCKET_NAME, s3_file_path)
+        processed_files += 1
+    except Exception as e:
+        logger.error(f"Error al procesar el archivo '{file_path}': {str(e)}")
 
     end_time = datetime.now()
     logger.success(f"Ingesta completada. Tiempo total: {end_time - start_time}. Archivos procesados: {processed_files}")
