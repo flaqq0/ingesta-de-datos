@@ -50,7 +50,8 @@ def get_product_price(tenant_id, product_id):
         if product:
             print(f"Producto encontrado: {product}")
         if product and "product_price" in product:
-            return Decimal(str(product["product_price"]))
+            # Convertir a Decimal si es necesario
+            return Decimal(product["product_price"]) if isinstance(product["product_price"], (int, float, str)) else product["product_price"]
         else:
             raise KeyError(f"Precio no encontrado para el producto {product_id}")
     except ClientError as e:
